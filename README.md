@@ -5,7 +5,7 @@ This extension allows you to make portal from your forum;
 
 Installation
 ===============
- - download latest version from http://gitlab.thunders.spb.ru/thunder/portal_by_daris
+ - download latest version from https://github.com/thunder-spb/portal_by_daris
  - unzip to <your_punnbb_installation>/extensions/
  - install from Administration -> Extensions
  - enjoy
