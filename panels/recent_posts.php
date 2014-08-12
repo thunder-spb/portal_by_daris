@@ -9,7 +9,7 @@
 
 
 $count = 10; // count posts
-$subject_len = 20; // length of topic title
+$subject_len = 30; // length of topic title
 
 
 // Make sure no one attempts to run this script "directly"

@@ -79,7 +79,7 @@ if ($forum_db->num_rows($result))
 	while ($cur_news = $forum_db->fetch_assoc($result))
 	{
 		($hook = get_hook('xn_portal_by_daris_nw_news_loop_start')) ? eval($hook) : null;
-
+//		var_dump( $cur_news );
 		$forum_page['info'] = $forum_page['info-right'] = array();
 
 		$cur_news['subject'] = forum_htmlencode($cur_news['subject']);
@@ -87,21 +87,24 @@ if ($forum_db->num_rows($result))
 		if ($forum_config['o_censoring'] == '1')
 			$cur_news['subject'] = censor_words($cur_news['subject']);
 
-		$forum_page['info'][] = $lang_portal['Posted'].': '.format_time($cur_news['posted']);
-		$forum_page['info'][] = $lang_portal['Author'].': '.forum_htmlencode($cur_news['poster']);
+		$forum_page['info'][] = '<b>'.$lang_portal['Posted'].':</b> '.format_time($cur_news['posted']);
+		$forum_page['info'][] = '<b>'.$lang_portal['Author'].':</b> <a href="/user/'.$cur_news['poster_id'].'">'.forum_htmlencode($cur_news['poster']).'</a>';
 
 		$forum_page['post_message'] = $cur_news['message'];
 		
 		if (utf8_strlen($forum_page['post_message']) > $forum_config['o_portal_news_description_length'] && $forum_config['o_portal_news_description_length'] > 0)
 		{
 			$forum_page['post_message'] = utf8_substr($forum_page['post_message'], 0, $forum_config['o_portal_news_description_length']).'...';
-			$forum_page['info'][] = '<a href="'.forum_link($forum_url['topic'], array($cur_news['id'], sef_friendly($cur_news['subject']))).'">'.$lang_portal['Read more'].'</a>';
+			$forum_page['read_more_link'] = '<a href="'.forum_link($forum_url['topic'], array($cur_news['id'], sef_friendly($cur_news['subject']))).'">'.$lang_portal['Read more'].'</a>';
+			$forum_page['info'][] = $forum_page['read_more_link'];
 		}
 
 		$forum_page['post_message'] = parse_message($forum_page['post_message'], $cur_news['hide_smilies']);
+		$forum_page['post_message'] .= '<div style="text-align:center;padding:5px;">'.$forum_page['read_more_link'].'</div>';
 
-//		$forum_page['info'][] = $lang_portal['Views'].': '.$cur_news['num_views'];
-		$forum_page['info-right'][] = '<a href="'.forum_link($forum_url['topic'], array($cur_news['id'], sef_friendly($cur_news['subject']))).'">'.$lang_portal['Comments'].': '.$cur_news['num_replies'].'</a>';
+		$forum_page['info'][] = '<b>'.$lang_portal['Views'].':</b> '.$cur_news['num_views'];
+		
+		$forum_page['info-right'][] = '<a href="'.forum_link($forum_url['topic'], array($cur_news['id'], sef_friendly($cur_news['subject']))).'"><b>'.$lang_portal['Comments'].':</b> '.$cur_news['num_replies'].'</a>';
 
 		($hook = get_hook('xn_portal_by_daris_nw_row_pre_display')) ? eval($hook) : null;
 
@@ -116,6 +119,7 @@ if ($forum_db->num_rows($result))
 	<div class="main-content news panel-content">
 		<div class="entry-content">
 			<?php echo $forum_page['post_message'] ?>
+			<div style="border-top:1px dashed #ccc;padding-bottom:5px;"></div>
 			<div class="news-info-right"><?php echo implode(' | ', $forum_page['info-right']) ?></div>
 			<div class="news-info"><?php echo implode(' | ', $forum_page['info']) ?></div>
 		</div>

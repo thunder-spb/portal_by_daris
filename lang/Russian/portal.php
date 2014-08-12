@@ -38,7 +38,7 @@ $lang_portal = array(
 
 // Recent posts
 'No posts' 					=> 'Нет сообщений',
-'By'						=> 'По',
+'By'						=> 'Автор',
 
 // Search
 'Submit search'				=> 'ИСКАТЬ',
